@@ -23,6 +23,7 @@ public class CacheAndPaste extends JPanel {
     //TODO save the copied content from the listener class into clipboard in the main class
 
     private static KeyListener listener;
+    public static Clipboard clipboard;
 
     //This constructor class listens for keyboard shortcuts
     private CacheAndPaste() {
@@ -38,11 +39,11 @@ public class CacheAndPaste extends JPanel {
         //Make an instance of the class to print keyboard inputs
         //and a clipboard to hold the data
         CacheAndPaste keyboardInput = new CacheAndPaste();
-        Clipboard clipboard = new Clipboard();
+        clipboard = new Clipboard();
 
         //Clipboard UI
         frame.add(keyboardInput);
-        frame.setSize(50, 500);
+        frame.setSize(100, 800);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

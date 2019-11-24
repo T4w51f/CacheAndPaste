@@ -78,4 +78,11 @@ public class Clipboard {
     public Stack<String> getClipboard () {
         return this.clipboard;
     }
+
+    /**
+     * Prints the stack
+     */
+    public void printClipboard() {
+        System.out.println(clipboard.toString());
+    }
 }

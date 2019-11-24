@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class KeyboardListener implements KeyListener {
     //Debugger constant to print debug statements
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
 
     //Max length of keys to be pressed to use the Clipboard
     private final int SHORTCUT_KEY_LENGTH = 3;
@@ -26,8 +26,16 @@ public class KeyboardListener implements KeyListener {
     private final ArrayList<String> paste4 = new ArrayList<>(Arrays.asList("Ctrl", "V", "NumPad-4"));
     private final ArrayList<String> paste5 = new ArrayList<>(Arrays.asList("Ctrl", "V", "NumPad-5"));
 
-    //An ArrayList to contain all the shortcuts to cut down boolean check
-    private ArrayList<String> keyboardShortcut;
+//    private final String paste1 = "Ctrl , V, NumPad-1";
+//    private final String paste2 = "Ctrl , V, NumPad-2";
+//    private final String paste3 = "Ctrl , V, NumPad-3";
+//    private final String paste4 = "Ctrl , V, NumPad-4";
+//    private final String paste5 = "Ctrl , V, NumPad-5";
+
+    private final String copy = "Ctrl, C";
+
+    //An ArrayList to contain all the paste shortcuts to cut down boolean check
+    private ArrayList<String> keyboardPasteShortcut;
 
     //3 Key Sequence in order of key press
     private ArrayList<String> keySequence;
@@ -36,7 +44,7 @@ public class KeyboardListener implements KeyListener {
      * Constructor to create listener object and instantiate variables
      */
     public KeyboardListener() {
-        keyboardShortcut = new ArrayList<>();
+        keyboardPasteShortcut = new ArrayList<>();
         keySequence = new ArrayList<String>();
 
         initKeyShortcuts();
@@ -46,11 +54,11 @@ public class KeyboardListener implements KeyListener {
      * Creates an array of shortcut strings
      */
     private void initKeyShortcuts() {
-        keyboardShortcut.add(paste1.toString());
-        keyboardShortcut.add(paste2.toString());
-        keyboardShortcut.add(paste3.toString());
-        keyboardShortcut.add(paste4.toString());
-        keyboardShortcut.add(paste5.toString());
+        keyboardPasteShortcut.add(paste1.toString());
+        keyboardPasteShortcut.add(paste2.toString());
+        keyboardPasteShortcut.add(paste3.toString());
+        keyboardPasteShortcut.add(paste4.toString());
+        keyboardPasteShortcut.add(paste5.toString());
     }
 
     /**
@@ -59,7 +67,7 @@ public class KeyboardListener implements KeyListener {
      * @return
      */
     private boolean isShortcut(ArrayList<String> keySequence) {
-        return keyboardShortcut.contains(keySequence.toString());
+        return keyboardPasteShortcut.contains(keySequence.toString());
     }
 
     /**
@@ -79,6 +87,7 @@ public class KeyboardListener implements KeyListener {
         return systemContent;
     }
 
+    //Unused
     @Override
     public void keyTyped(KeyEvent keyEvent) {
     }
@@ -98,9 +107,47 @@ public class KeyboardListener implements KeyListener {
         }
 
         if(DEBUG) System.out.println("DEBUG: KeySequence: " + keySequence);
-        if(isShortcut(keySequence)) System.out.println("Hit Shortcut: " + keySequence);
+        addCopiedContentToClipboard();
+        pasteElement();
     }
 
+    private void pasteElement() {
+        if (isShortcut(keySequence)) {
+            System.out.println("Hit Paste Shortcut: " + keySequence);
+            System.out.println("Pasting item: " + CacheAndPaste.clipboard.getContent(getPasteIndex(keySequence.get(SHORTCUT_KEY_LENGTH - 1))));
+
+            //To prevent conflict between subsequent pastes
+            keySequence.clear();
+        }
+    }
+
+    private void addCopiedContentToClipboard() {
+        if(keySequence.toString().contains(copy)) {
+            CacheAndPaste.clipboard.addToClipboard(getSystemClipboardContent());
+            System.out.println("Copied element from system: " + getSystemClipboardContent());
+            CacheAndPaste.clipboard.printClipboard();
+
+            //To prevent conflict between subsequent copies
+            keySequence.clear();
+        }
+    }
+
+    private int getPasteIndex(String key) {
+        int idx;
+
+        switch(key) {
+            case "NumPad-1" : idx = 1;
+            case "NumPad-2" : idx = 2;
+            case "NumPad-3" : idx = 3;
+            case "NumPad-4" : idx = 4;
+            case "NumPad-5" : idx = 5;
+            default: idx = 1;
+        }
+
+        return idx;
+    }
+
+    //Unused
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         if(DEBUG) System.out.println("Key Released: " + KeyEvent.getKeyText(keyEvent.getKeyCode()));
