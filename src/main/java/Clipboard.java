@@ -43,6 +43,35 @@ public class Clipboard {
     }
 
     /**
+     * This method clears the whole clipboard upon
+     * the user's request
+     */
+    public void clearAll () {
+        this.clipboard.clear();
+    }
+
+    public String getContent (int base1_index) {
+        Stack<String> holder = new Stack<String>();
+        String content = "";
+
+        for (int i = 0; i < base1_index; i++) {
+            holder.push(this.clipboard.pop());
+        }
+
+        //Using pop to retain remove the element from the stack
+        //and place it on the top of the stack so that the user
+        //has the latest entry stored on top - which will be
+        //defaulted to CTRL + V for ease of access
+        content = holder.pop();
+
+        for (int j = 0; j < base1_index - 1; j++) {
+            this.clipboard.push(holder.pop());
+        }
+        this.clipboard.push(content);
+        return content;
+    }
+
+    /**
      * Returns the clipboard object to the user call
      * @return global variable clipboard stack object
      */
