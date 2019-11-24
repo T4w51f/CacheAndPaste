@@ -3,6 +3,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.security.Key;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
@@ -20,10 +21,13 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
 public class CacheAndPaste extends JPanel {
     private static KeyListener listener;
+    public static ArrayList<String> keySequence;
 
     //This constructor class listens for keyboard shortcuts
-    public CacheAndPaste() {
+    private CacheAndPaste() {
         this.listener = new KeyboardListener();
+        this.keySequence = new ArrayList<String>();
+
         addKeyListener(listener);
         setFocusable(true);
     }
@@ -41,9 +45,7 @@ public class CacheAndPaste extends JPanel {
         frame.setSize(50, 500);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 
-    public void sendInput(String key) {
-        System.out.println("Test: " + key);
+        //System.out.println("KeySequence: " + ((KeyboardListener) listener).getKeySequence());
     }
 }
