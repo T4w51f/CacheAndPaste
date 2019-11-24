@@ -1,5 +1,9 @@
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,7 +19,6 @@ public class KeyboardListener implements KeyListener {
     //Max length of keys to be pressed to use the Clipboard
     private final int SHORTCUT_KEY_LENGTH = 3;
 
-    //TODO Clear the keySequence if it gets longer than 10 elements for optimization
     //Define the shortcut key combinations
     private final ArrayList<String> paste1 = new ArrayList<>(Arrays.asList("Ctrl", "V", "NumPad-1"));
     private final ArrayList<String> paste2 = new ArrayList<>(Arrays.asList("Ctrl", "V", "NumPad-2"));
@@ -26,11 +29,22 @@ public class KeyboardListener implements KeyListener {
     //An ArrayList to contain all the shortcuts to cut down boolean check
     private ArrayList<String> keyboardShortcut;
 
+    //3 Key Sequence in order of key press
+    private ArrayList<String> keySequence;
+
+    /**
+     * Constructor to create listener object and instantiate variables
+     */
     public KeyboardListener() {
         keyboardShortcut = new ArrayList<>();
+        keySequence = new ArrayList<String>();
+
         initKeyShortcuts();
     }
 
+    /**
+     * Creates an array of shortcut strings
+     */
     private void initKeyShortcuts() {
         keyboardShortcut.add(paste1.toString());
         keyboardShortcut.add(paste2.toString());
@@ -39,8 +53,30 @@ public class KeyboardListener implements KeyListener {
         keyboardShortcut.add(paste5.toString());
     }
 
+    /**
+     * Checks if key sequence entered is a shortcut key sequence
+     * @param keySequence a sequence of keys of upto SHORTCUT_KEY_LENGTH keys
+     * @return
+     */
     private boolean isShortcut(ArrayList<String> keySequence) {
         return keyboardShortcut.contains(keySequence.toString());
+    }
+
+    /**
+     * Fetches the latest copied content from the system clipboard
+     * @return A string of the copied content from the system, and
+     * an empty string if nothing is copied
+     */
+    private String getSystemClipboardContent() {
+        String systemContent = "";
+        try {
+            systemContent = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+        } catch (UnsupportedFlavorException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return systemContent;
     }
 
     @Override
@@ -50,8 +86,6 @@ public class KeyboardListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         if(DEBUG) System.out.println("Key Pressed: " + KeyEvent.getKeyText(keyEvent.getKeyCode()));
-
-        ArrayList<String> keySequence = CacheAndPaste.keySequence;
 
         boolean prereq = keySequence.isEmpty() || (!keySequence.isEmpty() && !keySequence.get(keySequence.size() - 1).equals(KeyEvent.getKeyText(keyEvent.getKeyCode())));
 

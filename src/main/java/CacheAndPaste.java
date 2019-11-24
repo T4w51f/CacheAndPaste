@@ -20,13 +20,13 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
  */
 
 public class CacheAndPaste extends JPanel {
+    //TODO save the copied content from the listener class into clipboard in the main class
+
     private static KeyListener listener;
-    public static ArrayList<String> keySequence;
 
     //This constructor class listens for keyboard shortcuts
     private CacheAndPaste() {
         this.listener = new KeyboardListener();
-        this.keySequence = new ArrayList<String>();
 
         addKeyListener(listener);
         setFocusable(true);
