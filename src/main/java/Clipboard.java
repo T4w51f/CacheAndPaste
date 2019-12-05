@@ -35,11 +35,13 @@ public class Clipboard {
         //Check if the content is not an empty string
         boolean prereqFlag = (this.clipboard.size() <= MAX_LENGTH) && !copiedEntry.equals("") && copiedEntry != null;
 
-        if (prereqFlag) this.clipboard.push(copiedEntry);
+        if (prereqFlag && !this.clipboard.contains(copiedEntry)) {
+            this.clipboard.push(copiedEntry);
+        }
 
         //Replace this later on with an exception, to avoid overloading system memory
         //with too many copied elements
-        else System.out.println("Failed to copy, reached Clipboard limit");
+        //else System.out.println("Failed to copy, reached Clipboard limit");
     }
 
     /**
@@ -84,5 +86,9 @@ public class Clipboard {
      */
     public void printClipboard() {
         System.out.println(clipboard.toString());
+    }
+
+    public int size() {
+        return clipboard.size();
     }
 }

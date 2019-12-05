@@ -38,7 +38,7 @@ public class KeyboardListener implements KeyListener {
     private ArrayList<String> keyboardPasteShortcut;
 
     //3 Key Sequence in order of key press
-    private ArrayList<String> keySequence;
+    public ArrayList<String> keySequence;
 
     /**
      * Constructor to create listener object and instantiate variables
@@ -70,22 +70,22 @@ public class KeyboardListener implements KeyListener {
         return keyboardPasteShortcut.contains(keySequence.toString());
     }
 
-    /**
-     * Fetches the latest copied content from the system clipboard
-     * @return A string of the copied content from the system, and
-     * an empty string if nothing is copied
-     */
-    private String getSystemClipboardContent() {
-        String systemContent = "";
-        try {
-            systemContent = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return systemContent;
-    }
+//    /**
+//     * Fetches the latest copied content from the system clipboard
+//     * @return A string of the copied content from the system, and
+//     * an empty string if nothing is copied
+//     */
+//    private String getSystemClipboardContent() {
+//        String systemContent = "";
+//        try {
+//            systemContent = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+//        } catch (UnsupportedFlavorException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return systemContent;
+//    }
 
     //Unused
     @Override
@@ -107,7 +107,7 @@ public class KeyboardListener implements KeyListener {
         }
 
         if(DEBUG) System.out.println("DEBUG: KeySequence: " + keySequence);
-        addCopiedContentToClipboard();
+        //addCopiedContentToClipboard();
         pasteElement();
     }
 
@@ -121,16 +121,16 @@ public class KeyboardListener implements KeyListener {
         }
     }
 
-    private void addCopiedContentToClipboard() {
-        if(keySequence.toString().contains(copy)) {
-            CacheAndPaste.clipboard.addToClipboard(getSystemClipboardContent());
-            System.out.println("Copied element from system: " + getSystemClipboardContent());
-            CacheAndPaste.clipboard.printClipboard();
-
-            //To prevent conflict between subsequent copies
-            keySequence.clear();
-        }
-    }
+//    private void addCopiedContentToClipboard() {
+//        //if(keySequence.toString().contains(copy)) {
+//            CacheAndPaste.clipboard.addToClipboard(getSystemClipboardContent());
+//            System.out.println("Copied element from system: " + getSystemClipboardContent());
+//            CacheAndPaste.clipboard.printClipboard();
+//
+//            //To prevent conflict between subsequent copies
+//            keySequence.clear();
+//        //}
+//    }
 
     private int getPasteIndex(String key) {
         int idx;
