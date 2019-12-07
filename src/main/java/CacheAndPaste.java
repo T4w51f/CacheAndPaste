@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -17,8 +18,24 @@ import java.io.IOException;
  * with simple keyboard shortcuts
  */
 
+/**
+ * HOW TO:
+ * Run the CacheAndPaste main class.
+ * App can run in background.
+ * Copy contents.
+ * App stores 5 recent copied elements.
+ * To select what to paste, go to app.
+ * Hit 1 to 5 on keyboard main keys or numpad keys.
+ * The copied element associated with the number hit is ready to be pasted.
+ * Note: 1 holds the latest copied element that is ready to be pasted.
+ */
+
+//TODO Design and implement JFrame UI
+//TODO Add clear all button (currently pressing X on keyboard clears all and copies the latest entry automatically)
+//TODO Have clear all feature update UI as well
+//TODO solve the "java.lang.ClassNotFoundException: com/intellij/openapi/editor/RawText" exception
+
 public class CacheAndPaste extends JPanel {
-    //TODO save the copied content from the listener class into clipboard in the main class
     private static JFrame frame = new JFrame("Clipboard");
 
     private static JLabel label1 = new JLabel();
@@ -81,9 +98,6 @@ public class CacheAndPaste extends JPanel {
                         if(CacheAndPaste.clipboard.size() > 2) label3.setText("3:" + CacheAndPaste.clipboard.getContent(3));
                         if(CacheAndPaste.clipboard.size() > 3) label4.setText("4:" + CacheAndPaste.clipboard.getContent(4));
                         if(CacheAndPaste.clipboard.size() > 4) label5.setText("5:" + CacheAndPaste.clipboard.getContent(5));
-
-                        //TODO can enter more than 5
-                        //TODO jumps back and forth order
                     }
 
                     /**
